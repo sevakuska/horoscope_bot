@@ -18,7 +18,7 @@ async def get_horoscope(sign: str) -> str:
     async with aiohttp.ClientSession() as session:
         response = await session.get(url=URL.format(sign), headers=headers)
         status = response.status
-        if status == 200:
+        try:
             text = await response.text()
             soup = BeautifulSoup(text, 'html.parser')
             block = soup.find('div', class_=PREDICT_ATR)
@@ -27,5 +27,5 @@ async def get_horoscope(sign: str) -> str:
             date = soup.find('span', class_=DATE_ATR).text
             prediction = '\n\n'.join([p.text for p in paragraphs])
             return f'{sign_block}\n{date}\n\n{prediction}'
-        else:
+        except AttributeError:
             return 'Ошибка, попробуйте позже'
