@@ -26,6 +26,6 @@ async def get_horoscope(sign: str) -> str:
             sign_block = soup.find('h1', class_=SIGN_ATR).text.split(':')[-1]
             date = soup.find('span', class_=DATE_ATR).text
             prediction = '\n\n'.join([p.text for p in paragraphs])
-            return f'{sign_block}\{date}\n\n{prediction}'
+            return f'{sign_block}\n{date}\n\n{prediction}'
         else:
             return 'Ошибка, попробуйте позже'
