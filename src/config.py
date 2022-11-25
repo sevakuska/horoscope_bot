@@ -1,4 +1,9 @@
-from os import getenv
+from pydantic import BaseSettings, SecretStr
 
 
-TOKEN = getenv('TOKEN')
+class Settings(BaseSettings):
+    bot_token: SecretStr
+
+    class Config():
+        env_file = '.env'
+        env_file_encoding = 'utf-8'

@@ -1,29 +1,15 @@
 import asyncio
 
-from aiogram import Bot, Dispatcher, executor
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram import Bot, Dispatcher
 
-from config import TOKEN
-from handler import Handler
+import config
 
 
-async def on_startup(dispatcher: Dispatcher):
-    pass
-
-
-def main():
-    bot = Bot(TOKEN)
-    storage = MemoryStorage()
-    dispatcher = Dispatcher(bot, storage=storage)
-    handler = Handler(bot, dispatcher)
-    handler.register_message_handlers()
-    handler.register_callback_handlers()
-    executor.start_polling(
-        dispatcher=dispatcher,
-        on_startup=on_startup,
-        skip_updates=True
-    )
+async def main():
+    bot = Bot(token=config.Settings().bot_token.get_secret_value())
+    dispatcher = Dispatcher()
+    await dispatcher.start_polling(bot)
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
